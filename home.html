@@ -170,136 +170,162 @@
   <canvas id="canvas"></canvas>
 
   <!-- JAVASCRIPT FOR WALKING ANIMALS -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const canvas = document.getElementById('canvas');
-      const ctx = canvas.getContext('2d');
+ <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
 
-      canvas.style.position = "absolute";
-      canvas.style.top = "0";
-      canvas.style.left = "0";
-      canvas.style.width = "100%";
-      canvas.style.height = "100%";
-      canvas.style.zIndex = "2";
-      canvas.style.pointerEvents = "none";
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    // SET CANVAS POSITION AND STYLE
+    canvas.style.position = "absolute";
+    canvas.style.top = "0";
+    canvas.style.left = "0";
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
+    canvas.style.zIndex = "2";
+    canvas.style.pointerEvents = "none";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 
-      const N = 5;
-      const animals = [];
-      const xLimit = canvas.width;
-      const yLimit = canvas.height;
-      const maxVelocity = 0.3;
-      const minVelocity = 0.1;
-      const maxSize = 80;
-      const minSize = 80;
+    // SIZE OF IMAGES 
+    const N = 5; // NUMBER OF ANIMALS ON SCREEN
+    const animals = []; // STORE ANIMAL OBJECTS
+    const xLimit = canvas.width; // HORIZONTAL LIMIT FOR ANIMAL 
+    const yLimit = canvas.height; // VERTICAL LIMIT  
+    const maxVelocity = 0.3; // MAX SPEED OF ANIMAL
+    const minVelocity = 0.1; // MIN SPEED OF ANIMAL
+    const maxSize = 80; // SIZE OF ANIMAL IMAGE
+    const minSize = 80; // SIZE OF ANIMAL 
 
-      const animalImages = [
-        "images/brownbunny.png",
-        "images/browncat.png",
-        "images/brownham.png"
-      ];
+    // IMAGES FOR ANIMATION
+    const animalImages = [
+      "images/brownbunny.png",
+      "images/browncat.png",
+      "images/brownham.png"
+    ];
 
-      class Animal {
-        constructor(x, y, vX, vY, img, size) {
-          this.x = x;
-          this.y = y;
-          this.vX = vX;
-          this.vY = vY;
-          this.img = img;
-          this.size = size;
-        }
-
-        draw() {
-          if (this.img.complete && this.img.naturalWidth !== 0) {
-            ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
-          } else {
-            ctx.fillStyle = "#aaa";
-            ctx.beginPath();
-            ctx.arc(this.x + this.size / 2, this.y + this.size / 2, this.size / 2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-        }
-
-        update() {
-          this.x += this.vX;
-          if (this.x <= 0 || this.x >= xLimit - this.size) this.vX = -this.vX;
-          this.y += this.vY;
-          if (this.y <= 0 || this.y >= yLimit - this.size) this.vY = -this.vY;
-        }
+    // CLASS TO CREATE ANIMAL OBJECTS
+    class Animal {
+      constructor(x, y, vX, vY, img, size) {
+        this.x = x; // X POSITION ON WEBPAGE
+        this.y = y; // Y POSITION
+        this.vX = vX; // X VELOCITY DIRECTION
+        this.vY = vY; // Y DIRECTION
+        this.img = img; // IMAGE FOR ANIMAL
+        this.size = size; // SIZE OF ANIMAL
       }
 
-      function preloadImages(paths, callback) {
-        let loaded = 0;
-        const imgs = [];
-
-        paths.forEach((path, i) => {
-          const img = new Image();
-          img.src = path;
-
-          img.onload = () => {
-            loaded++;
-            if (loaded === paths.length) callback(imgs);
-          };
-
-          img.onerror = () => {
-            console.warn(`❌ Failed to load image: ${path}`);
-            loaded++;
-            if (loaded === paths.length) callback(imgs);
-          };
-
-          imgs.push(img);
-        });
+      // DRAW ANIMAL IMAGE ON CANVAS
+    draw() { // THIS FUNCTION DRAWS THE ANIMAL ON THE SCREEN
+      if (this.img.complete && this.img.naturalWidth !== 0) {
+        // IF THE IMAGE IS LOADED PROPERLY (IT'S READY AND NOT BROKEN)
+        ctx.drawImage(this.img, this.x, this.y, this.size, this.size); 
+        // DRAW THE IMAGE ON THE CANVAS AT (X, Y) AND MAKE IT THE RIGHT SIZE
+      } else {
+        // IF THE IMAGE IS BROKEN OR STILL LOADING
+        ctx.fillStyle = "#aaa"; // SET THE COLOR TO GRAY
+        ctx.beginPath(); // START DRAWING A SHAPE
+        ctx.arc(
+          this.x + this.size / 2, // PLACE CIRCLE IN THE MIDDLE OF WHERE IMAGE WOULD BE (X)
+          this.y + this.size / 2, // PLACE CIRCLE IN THE MIDDLE OF WHERE IMAGE WOULD BE (Y)
+          this.size / 2, // MAKE THE CIRCLE THE SAME SIZE AS THE IMAGE
+          0, // START AT ANGLE 0 (START OF CIRCLE)
+          Math.PI * 2 // GO ALL THE WAY AROUND THE CIRCLE (360 DEGREES)
+        );
+        ctx.fill(); // FILL IN THE CIRCLE WITH COLOR
       }
+    }
 
-      function startGame(loadedImages) {
-        for (let i = 0; i < N; i++) {
-          const img = loadedImages[Math.floor(Math.random() * loadedImages.length)];
-          const size = getSize();
-          animals.push(new Animal(
-            getX(size),
-            getY(size),
-            getXVel(),
-            getYVel(),
-            img,
-            size
-          ));
-        }
-        requestAnimationFrame(gameLoop);
+
+
+      // UPDATE POSITION AND BOUNCE OFF EDGES
+      update() {
+        this.x += this.vX;
+        if (this.x <= 0 || this.x >= xLimit - this.size) this.vX = -this.vX;
+        this.y += this.vY;
+        if (this.y <= 0 || this.y >= yLimit - this.size) this.vY = -this.vY;
       }
+    }
 
-      function gameLoop() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        animals.forEach(a => {
-          a.update();
-          a.draw();
-        });
-        requestAnimationFrame(gameLoop);
+    // LOAD IMAGES BEFORE STARTING ANIMATION
+    function preloadImages(paths, callback) {
+      let loaded = 0; // COUNTER FOR LOADED IMAGES
+      const imgs = []; // ARRAY TO STORE IMAGE OBJECTS
+
+      paths.forEach((path, i) => {
+        const img = new Image();
+        img.src = path;
+
+        img.onload = () => {
+          loaded++;
+          if (loaded === paths.length) callback(imgs); // START GAME WHEN ALL IMAGES LOADED
+        };
+
+        img.onerror = () => {
+          console.warn(`❌ Failed to load image: ${path}`);
+          loaded++;
+          if (loaded === paths.length) callback(imgs); // CONTINUE EVEN IF IMAGE FAILS
+        };
+
+        imgs.push(img);
+      });
+    }
+
+    // START THE ANIMATION AFTER IMAGES ARE LOADED
+    function startGame(loadedImages) {
+      for (let i = 0; i < N; i++) {
+        const img = loadedImages[Math.floor(Math.random() * loadedImages.length)]; // PICK RANDOM IMAGE
+        const size = getSize(); // GET RANDOM SIZE
+        animals.push(new Animal(
+          getX(size), // RANDOM START X
+          getY(size), // RANDOM START Y
+          getXVel(),  // RANDOM VELOCITY X
+          getYVel(),  // RANDOM VELOCITY Y
+          img, size       
+        ));
       }
+      requestAnimationFrame(gameLoop); // START GAME LOOP
+    }
 
-      function getSize() {
-        return Math.floor(minSize + Math.random() * (maxSize - minSize));
-      }
+    // MAIN LOOP TO UPDATE AND DRAW ANIMALS
+    function gameLoop() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height); // CLEAR CANVAS
+      animals.forEach(a => {
+        a.update(); // UPDATE POSITION
+        a.draw();   // DRAW IMAGE
+      });
+      requestAnimationFrame(gameLoop); // CONTINUE LOOP
+    }
 
-      function getX(size) {
-        return Math.floor(Math.random() * (xLimit - size));
-      }
+    // RANDOM SIZE BETWEEN MIN AND MAX
+    function getSize() {
+      return Math.floor(minSize + Math.random() * (maxSize - minSize));
+    }
 
-      function getY(size) {
-        return Math.floor(Math.random() * (yLimit - size));
-      }
+    // RANDOM X POSITION  LIMIT
+    function getX(size) {
+      return Math.floor(Math.random() * (xLimit - size));
+    }
 
-      function getXVel() {
-        return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
-      }
+    // RANDOM Y  LIMIT
+    function getY(size) {
+      return Math.floor(Math.random() * (yLimit - size));
+    }
 
-      function getYVel() {
-        return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
-      }
+    // RANDOM X VELOCITY
+    function getXVel() {
+      return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
+    }
 
-      preloadImages(animalImages, startGame);
-    });
-  </script>
+    // RANDOM Y 
+    function getYVel() {
+      return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
+    }
+
+    // START EVERYTHING AFTER IMAGES ARE LOADED
+    preloadImages(animalImages, startGame);
+  });
+</script>
+
 <footer>
   <p> copyright 2025</p>
 </footer>
