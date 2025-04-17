@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Paw Island</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-image: url("images/background.png");
+      margin: 0;
+      font-family: Arial, sans-serif;
+      padding-top: 70px; /* prevent navbar from overlapping content */
+    }
+
+ 
+    /* NAVIGATION */
+    .navbar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #0f4c81, #0b3a62);
+      padding: 12px 0;
+      font-family: 'Comic Sans MS', 'Poppins', sans-serif;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    .navbar ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      gap: 20px;
+    }
+
+    .navbar li {
+      display: flex;
+    }
+
+    .navbar a {
+      background: linear-gradient(to bottom, #39a4df, #1c87c9);
+      border: 2px solid #1268a3;
+      border-radius: 20px;
+      padding: 8px 18px;
+      text-decoration: none;
+      font-weight: 900;
+      color: white;
+      font-size: 16px;
+      box-shadow: inset 0 2px 4px rgba(255, 255, 255, 0.4),
+                  inset 0 -2px 4px rgba(0, 0, 0, 0.1),
+                  0 2px 6px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, background 0.3s ease;
+    }
+
+    .navbar a:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to bottom, #4db8ff, #1a76b5);
+    }
+
+    /* WELCOME TO PAW ISLAND BOX */
+    .about {
+      background-color: transparent;
+      border: 2px solid #7C9A84;
+      padding: 20px 30px;
+      margin: 20px 30px 20px 10px;
+      border-radius: 16px;
+      color: #0a0c0b;
+      font-size: 1.1em;
+      line-height: 1.6;
+      width: 80%;
+      max-width: 900px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+      opacity: 0.9;
+    }
+
+    .about h2 {
+      font-family: 'Bangers', cursive;
+      color: #010201;
+      margin-bottom: 15px;
+    }
+
+    .about h2 {
+      color: #0f1310;
+      margin-bottom: 15px;
+    }
+
+    .about em {
+      font-style: italic;
+      color: #607f6e;
+    }
+
+    .about strong {
+      color: #090a0a;
+    }
+
+    /* LOGO */
+    .logo {
+      width: 3in;
+      height: 3in;
+      margin: 10px;
+    }
+
+    .logo img {
+      width: 3in;
+      height: 3in;
+      object-fit: contain;
+    }
+
+    /* SKETCH */
+   
+    /* TWO TREES IMAGE */
+    .corner {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: auto;
+      height: auto;
+      z-index: 0;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav class="navbar">
+    <ul>
+      <li><a href="#">Home</a></li>
+      <li><a href="#">Shop</a></li>
+      <li><a href="#">Community</a></li>
+      <li><a href="#">Mates</a></li>
+      <li><a href="#">Items</a></li>
+    </ul>
+  </nav>
+
+  <!-- LOGO -->
+  <div class="logo">
+    <img src="images/pawislandlogo.png" alt="Logo">
+  </div>
+
+  <!-- SKETCH -->
+
+
+  <!-- ABOUT BOX -->
+  <div class="about">
+    <h2>Welcome to PAW ISLAND!</h2>
+    <p>🌿 <strong>About the Creators of Paw Island</strong> 🌿</p>
+    <p>
+      Two lifelong gamers, bonded by countless hours of exploring cozy villages and mystical forests in Animal Crossing and Zelda, 
+      set out to make something of their own — something warm, magical, and comforting. That's how Paw Island was born.
+    </p>
+    <p>
+      Inspired by the feeling of childhood wonder — but made for players of all ages — Paw Island blends that cozy, familiar 
+      charm with just enough adventure to keep your inner child smiling and your grown-up self grounded.
+    </p>
+    <p>
+      It’s not just a game. It’s a place to breathe, connect, and build at your own pace. <strong>Welcome home.</strong>
+    </p>
+  </div>
+
+  <!-- DECORATIVE TREE IMAGE -->
+  <img src="images/2treestransbkgrnd.png" alt="2 trees" class="corner">
+
+  <!-- ANIMATED ANIMALS CANVAS -->
+  <canvas id="canvas"></canvas>
+
+  <!-- JAVASCRIPT FOR WALKING ANIMALS -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      canvas.style.position = "absolute";
+      canvas.style.top = "0";
+      canvas.style.left = "0";
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
+      canvas.style.zIndex = "2";
+      canvas.style.pointerEvents = "none";
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+
+      const N = 5;
+      const animals = [];
+      const xLimit = canvas.width;
+      const yLimit = canvas.height;
+      const maxVelocity = 0.3;
+      const minVelocity = 0.1;
+      const maxSize = 80;
+      const minSize = 80;
+
+      const animalImages = [
+        "images/brownbunny.png",
+        "images/browncat.png",
+        "images/brownham.png"
+      ];
+
+      class Animal {
+        constructor(x, y, vX, vY, img, size) {
+          this.x = x;
+          this.y = y;
+          this.vX = vX;
+          this.vY = vY;
+          this.img = img;
+          this.size = size;
+        }
+
+        draw() {
+          if (this.img.complete && this.img.naturalWidth !== 0) {
+            ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
+          } else {
+            ctx.fillStyle = "#aaa";
+            ctx.beginPath();
+            ctx.arc(this.x + this.size / 2, this.y + this.size / 2, this.size / 2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
+
+        update() {
+          this.x += this.vX;
+          if (this.x <= 0 || this.x >= xLimit - this.size) this.vX = -this.vX;
+          this.y += this.vY;
+          if (this.y <= 0 || this.y >= yLimit - this.size) this.vY = -this.vY;
+        }
+      }
+
+      function preloadImages(paths, callback) {
+        let loaded = 0;
+        const imgs = [];
+
+        paths.forEach((path, i) => {
+          const img = new Image();
+          img.src = path;
+
+          img.onload = () => {
+            loaded++;
+            if (loaded === paths.length) callback(imgs);
+          };
+
+          img.onerror = () => {
+            console.warn(`❌ Failed to load image: ${path}`);
+            loaded++;
+            if (loaded === paths.length) callback(imgs);
+          };
+
+          imgs.push(img);
+        });
+      }
+
+      function startGame(loadedImages) {
+        for (let i = 0; i < N; i++) {
+          const img = loadedImages[Math.floor(Math.random() * loadedImages.length)];
+          const size = getSize();
+          animals.push(new Animal(
+            getX(size),
+            getY(size),
+            getXVel(),
+            getYVel(),
+            img,
+            size
+          ));
+        }
+        requestAnimationFrame(gameLoop);
+      }
+
+      function gameLoop() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        animals.forEach(a => {
+          a.update();
+          a.draw();
+        });
+        requestAnimationFrame(gameLoop);
+      }
+
+      function getSize() {
+        return Math.floor(minSize + Math.random() * (maxSize - minSize));
+      }
+
+      function getX(size) {
+        return Math.floor(Math.random() * (xLimit - size));
+      }
+
+      function getY(size) {
+        return Math.floor(Math.random() * (yLimit - size));
+      }
+
+      function getXVel() {
+        return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
+      }
+
+      function getYVel() {
+        return (Math.random() < 0.5 ? -1 : 1) * (minVelocity + Math.random() * (maxVelocity - minVelocity));
+      }
+
+      preloadImages(animalImages, startGame);
+    });
+  </script>
+<footer>
+  <p> copyright 2025</p>
+</footer>
+</body>
+</html>
