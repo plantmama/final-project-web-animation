@@ -15,53 +15,51 @@
       font-family: Arial, sans-serif;
       padding-top: 70px;
     }
-
  
     /* NAVIGATION */
     .navbar {
       display: flex;
-      justify-content: center;
-      gap: 12px;
+      justify-content: flex-end; /* Move buttons to the right */
+      gap: 20px; /* Add more space between buttons */
       padding: 20px;
       background-color: transparent;
       position: fixed;
       top: 0;
       width: 100%;
       z-index: 1000;
-      
     }
 
     .navbar button {
-      background-image: url('/images/navbutton.png'); /* Your wood-style button */
+      background-image: url('/images/navbutton.png'); /* BUTTON */
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
       border: none;
       padding: 0;
       margin: 0;
-      width: 100px; /* SIZE OF BUTTON */
-      height: 60px;
+      width: 150px; /* SIZE OF BUTTON (larger) */
+      height: 80px; /* SIZE OF BUTTON (larger) */
       font-family: 'Comic Sans MS', cursive, sans-serif;
-      font-size: 14px;
+      font-size: 20px; /* Larger text */
       color: white;
-      background-color: transparent; /* important to prevent white fill */
-      box-shadow: none; /* remove shadow if unwanted */
+      background-color: transparent; 
       border-radius: 0;
       cursor: pointer;
       transition: transform 0.2s ease;
     }
 
+
     .navbar button:hover {
       transform: scale(1.05);
     }
 
-
+    
     /* WELCOME TO PAW ISLAND BOX */
     .about {
       background-color: transparent;
       border: 2px solid #7C9A84;
       padding: 20px 30px;
-      margin: 200px 30px 20px 10px; /*TOP RIGHT BOTTOM LEFT*/
+      margin: 550px 30px 20px 10px; /*TOP RIGHT BOTTOM LEFT*/
       border-radius: 16px;
       color: #0a0c0b;
       font-size: 1.1em;
@@ -98,27 +96,52 @@
     .logo {
       width: 3in;
       height: 3in;
-      margin: 10px;
+      margin: 20px;
+      border-radius: 16px; /* MATCHING BORDER RADIUS */
+      overflow: hidden; /* IMAGE MOCKS BORDER IMAGE */
     }
 
     .logo img {
       width: 3in;
       height: 3in;
       object-fit: contain;
+      border-radius: 16px; /* MATCHING BORDER RADIUS */
+      box-shadow: 6px 6px 20px rgba(0, 0, 0, 0.5); /* DARKER AND DEEPER SHADOW not even showing */
     }
 
+    /*MARKET*/ 
+    .market {
+      width: 3in;
+      height: 3in;
+      margin: 20px;
+    }
+
+    .market:hover {
+      transform: scale(1.05);
+    }
+
+    /*INVENTORY*/
+    .inventory {
+      width: 3in;
+      height: 2.3in;
+      margin: 30px;
+      display: block; /* PLACED BELOW MARKET */
+    }
+
+    .inventory:hover{
+      transform: scale(1.05);
+    }
+    .muffin {
+      width: 5in;
+      height: 2.3in;
+      float: right;
+     margin-top: -230px;
+     margin-right: 70px;
+    }
     /* SKETCH */
    
     /* TWO TREES IMAGE */
-    .corner {
-    position: relative;
-    display: block;
-    margin-top: 500px; /* MOVES FURTHER DOWN */
-    margin-bottom: 300px; /* SCROLLS PAST T*/
-    width: 30%;
-    height: auto;
-    z-index: 0;
-  }
+  
 
   </style>
 </head>
@@ -140,28 +163,20 @@
     <img src="images/pawislandlogo.png" alt="Logo">
   </div>
 
+  <!--MARKET PLACE-->
+  <img src="images/market.png" alt="market" class="market">
+
+
+  <!--INVENTORY -->
+  <img src="images/inventory.png" alt="inventory" class="inventory">
+
+  <!--MUFFIN -->
+  <img src="images/muffin.png" alt="muffin" class="muffin">
   <!-- SKETCH -->
 
 
-  <!-- ABOUT BOX -->
-  <div class="about">
-    <h2>Welcome to PAW ISLAND!</h2>
-    <p>🌿 <strong>About the Creators of Paw Island</strong> 🌿</p>
-    <p>
-      Two lifelong gamers, bonded by countless hours of exploring cozy villages and mystical forests in Animal Crossing and Zelda, 
-      set out to make something of their own — something warm, magical, and comforting. That's how Paw Island was born.
-    </p>
-    <p>
-      Inspired by the feeling of childhood wonder — but made for players of all ages — Paw Island blends that cozy, familiar 
-      charm with just enough adventure to keep your inner child smiling and your grown-up self grounded.
-    </p>
-    <p>
-      It’s not just a game. It’s a place to breathe, connect, and build at your own pace. <strong>Welcome home.</strong>
-    </p>
-  </div>
 
-  <!-- DECORATIVE TREE IMAGE -->
-  <img src="images/2treestransbkgrnd.png" alt="2 trees" class="corner">
+
 
   <!-- ANIMATED ANIMALS CANVAS -->
   <canvas id="canvas"></canvas>
@@ -323,8 +338,27 @@
   });
 </script>
 
+  <!-- ABOUT BOX -->
+  <div class="about">
+    <h2>Welcome to PAW ISLAND!</h2>
+    <p>🌿 <strong>About the Creators of Paw Island</strong> 🌿</p>
+    <p>
+      Two lifelong gamers, bonded by countless hours of exploring cozy villages and mystical forests in Animal Crossing and Zelda, 
+      set out to make something of their own — something warm, magical, and comforting. That's how Paw Island was born.
+    </p>
+    <p>
+      Inspired by the feeling of childhood wonder — but made for players of all ages — Paw Island blends that cozy, familiar 
+      charm with just enough adventure to keep your inner child smiling and your grown-up self grounded.
+    </p>
+    <p>
+      It’s not just a game. It’s a place to breathe, connect, and build at your own pace. <strong>Welcome home.</strong>
+    </p>
+  </div>
+
 <footer>
+  <br>
   <p> copyright 2025</p>
+  <br>
 </footer>
 </body>
 </html>
