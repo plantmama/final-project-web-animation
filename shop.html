@@ -171,41 +171,15 @@
   }
 }
 
-    /* Market Shake Effect */
-    .market.shake {
-      animation: shake 0.5s ease-in-out;
-    }
+/* Market Shake Effect */
+.market.shake {
+  animation: shake 0.5s ease-in-out;
+}
 
-    /* Inventory Shake Effect */
-    .inventory.shake {
-      animation: shake 0.5s ease-in-out;
-    }
-
-      /*GIFT AND GIFT SHAKE */
-      .gift {
-      width: 3in;
-      height: 3in;
-      position: absolute;
-      right: 2in;
-      margin-top: -2in;
-      animation: shake 0.5s infinite;
-      transition: transform 1s, left 1s, top 1s;
-    }
-
-    .giftImg {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    @keyframes shake {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-5px, 0); }
-      50% { transform: translate(5px, 0); }
-      75% { transform: translate(-5px, 0); }
-      100% { transform: translate(0, 0); }
-    }
-
+/* Inventory Shake Effect */
+.inventory.shake {
+  animation: shake 0.5s ease-in-out;
+}
 
     /*MUFFIN KITTY*/
     .muffin {
@@ -276,32 +250,6 @@ buttons.forEach(button => {
     <img src="images/pawislandlogo.png" alt="Logo">
   </div>
 
-  <!--MARKET PLACE-->
-  <img src="images/market.png" alt="market" class="market">
-
-
-  <!--INVENTORY -->
-  <img src="images/inventory.png" alt="inventory" class="inventory">
-  
-<!--     GIFT          -->
-<div class="gift" onclick="moveAndTransform()">
-  <img src="images/chestclosed.png" alt="gift" class="giftImg">
-</div>
-  <!-- SKETCH -->
-
-  <!--                SHAKE ANIMATION                 -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-  $(".market, .inventory").addClass("shake");  
-  setTimeout(function() {
-    $(".market, .inventory").removeClass("shake");
-  }, 500); 
-});
-</script>
-  <!--              END SHAKE ANIMATION                 -->
-
-
   <!-- ANIMATED ANIMALS CANVAS -->
   <canvas id="canvas"></canvas>
 
@@ -313,7 +261,7 @@ buttons.forEach(button => {
 
     // SET CANVAS POSITION AND STYLE
     canvas.style.position = "absolute";
-    canvas.style.top = "200px";
+    canvas.style.top = "300px";
     canvas.style.left = "0";
     canvas.style.width = "100%";
     canvas.style.height = "100%";
@@ -461,73 +409,3 @@ buttons.forEach(button => {
     preloadImages(animalImages, startGame);
   });
 </script>
-
-<!--     JS FOR GIFT OPEN/ CLOSED CHEST -->
-<script>
-function moveAndTransform() {
-  // Move to the center of the page
-  const gift = document.querySelector('.gift');
-  const giftImg = gift.querySelector('.giftImg');
-
-  gift.style.left = '50%';
-  gift.style.top = '50%';
-  gift.style.transform = 'translate(-50%, -50%)';
-
-  // STEP 1: MOVES TO CENTER 
-  giftImg.src = 'images/chestopen.png';
-
-  // STEP 2: CHANGES TO CHEST OPEN
-  setTimeout(() => {
-    giftImg.src = 'images/gift.png';
-  }, 1200);
-
-  // STEP 3: RESETS AFTER 3 SECONDS, REVERTS TO CHEST OPEN
-  setTimeout(() => {
-    gift.style.left = '2in';
-    gift.style.top = '-2in';
-    gift.style.transform = 'translate(0, 0)';
-    giftImg.src = 'images/chestclosed.png';
-  }, 6500);
-}
-
-
-</script>
-  <!--MUFFIN -->
-  <img src="images/muffin.png" alt="muffin" class="muffin">
-  <!-- ABOUT BOX -->
-  <div class="about">
-    <h2>Welcome to PAW ISLAND!</h2>
-    <p>🌿 <strong>About the Creators of Paw Island</strong> 🌿</p>
-    <p>
-      Two lifelong gamers, bonded by countless hours of exploring cozy villages and mystical forests in Animal Crossing and Zelda, 
-      set out to make something of their own — something warm, magical, and comforting. That's how Paw Island was born. 
-      From the very beginning, we dreamed of creating a space where people could escape, relax, and immerse themselves in a world 
-      filled with wonder, beauty, and heartwarming interactions.
-    </p>
-    <p>
-      Inspired by the feeling of childhood wonder — but made for players of all ages — Paw Island blends that cozy, familiar charm 
-      with just enough adventure to keep your inner child smiling and your grown-up self grounded. Whether you’re customizing your 
-      dream island, embarking on quiet fishing trips, or meeting new friends, there’s always something new to discover.
-    </p>
-    <p>
-      It’s not just a game. It’s a place to breathe, connect, and build at your own pace. A sanctuary where you can take things slow, 
-      create your own personal paradise, and embrace the simple joys of life. In Paw Island, every day brings new opportunities to relax, 
-      grow, and explore — whether you’re tending to your garden, designing your home, or simply enjoying the peaceful atmosphere 
-      with loved ones.
-    </p>
-    <p>
-      Our goal is to build a community where players can share their creativity, make lasting memories, and escape into a world that 
-      always feels like home. Paw Island isn’t just about adventure; it’s about cherishing the little moments and finding peace amidst 
-      the beauty of the virtual world Welcome home.. <strong>NAVIGATION IS CURRENTLY INCOMPLETE, WAS FOR ANIMATION PURPOSES ONLY. ALL ARTWORK IS MY OWN,
-       I AM CREATING A GAME </strong>
-    </p>
-  </div>
-  
-
-  <footer class="footer">
-    <p>🐾 Paw Island • Made with love 🐾</p>
-    <p>© 2025 Paw Island. All rights reserved.</p>
-  </footer>
-  
-</body>
-</html>
